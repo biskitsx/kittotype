@@ -44,7 +44,7 @@ function TimeSelector({ typing, setTimeUp, setTyping, btnActive, setBtnActive }:
     }, [startCountdown, time]);
 
     return (
-        <div className='w-full flex items-center justify-between bg-neutral-content rounded-md p-2 shadow-md'>
+        <div className='w-full flex items-center justify-between bg-yellow-400 rounded-md p-2 shadow-md'>
             <span className="countdown font-mono text-4xl">
                 {/* <span style={{ "--value": time }}></span> */}
                 {time}
