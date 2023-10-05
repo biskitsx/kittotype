@@ -1,11 +1,19 @@
 import React, { useEffect } from 'react'
 
-function TimeSelector({ typing, setTimeUp, setTyping }: { typing: string, setTimeUp: React.Dispatch<React.SetStateAction<boolean>>, setTyping: React.Dispatch<React.SetStateAction<string>> }) {
+interface TimeSelectorProps {
+    typing: string;
+    setTimeUp: React.Dispatch<React.SetStateAction<boolean>>;
+    setTyping: React.Dispatch<React.SetStateAction<string>>;
+    btnActive: number;
+    setBtnActive: React.Dispatch<React.SetStateAction<number>>;
+}
+
+function TimeSelector({ typing, setTimeUp, setTyping, btnActive, setBtnActive }: TimeSelectorProps) {
     const [time, setTime] = React.useState(15)
-    const [btnActive, setBtnActive] = React.useState(15)
     const [startCountdown, setStartCountdown] = React.useState(false)
     const onBtnClick = (e: any) => {
         setTyping('')
+        setTimeUp(false)
         setStartCountdown(false)
         setTime(e.target.value)
         setBtnActive(e.target.value)
@@ -40,7 +48,6 @@ function TimeSelector({ typing, setTimeUp, setTyping }: { typing: string, setTim
             <span className="countdown font-mono text-4xl">
                 <span style={{ "--value": time }}></span>
             </span>
-            <h1>{typing}</h1>
             <div className="tabs font-semibold">
                 <button value={15} className={btnActive == 15 ? "tab tab-active" : "tab"} onClick={onBtnClick}>15s</button>
                 <button value={30} className={btnActive == 30 ? "tab tab-active" : "tab"} onClick={onBtnClick}>30s</button>
