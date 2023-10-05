@@ -19,3 +19,11 @@
     xl:w-1140
     2xl:w-1320 
 }
+
+.sentence-wrap {
+    @apply flex flex-wrap justify-between flex-row text-2xl font-semibold text-neutral tracking-widest ease-in
+}
+
+.sentence-wrap-loading {
+    @apply flex flex-wrap justify-between flex-row text-2xl font-semibold text-neutral tracking-widest ease-in animate-pulse
+}
