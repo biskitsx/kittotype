@@ -21,7 +21,7 @@
 }
 
 .sentence-wrap {
-    @apply flex flex-wrap justify-between flex-row text-2xl font-semibold text-neutral tracking-widest ease-in
+    @apply flex flex-wrap justify-between flex-row  font-semibold text-neutral tracking-widest ease-in text-lg md:text-xl lg:text-2xl
 }
 
 .sentence-wrap-loading {

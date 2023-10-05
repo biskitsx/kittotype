@@ -36,7 +36,8 @@ function TypeBox({ typing, setTyping, timeUp, setTimeUp }: TypeBoxProps) {
         fetchSentence()
     }, [])
     return (
-        <div className='h-full flex flex-col py-40 px-2 items-center gap-40 w-full'>
+        <div className='h-full flex flex-col px-2 items-center w-full justify-center py-16 gap-16 md:py-24 md:gap-24 2xl:py-40 2xl:gap-40'
+        >
             <TimeSelector typing={typing} setTimeUp={setTimeUp} setTyping={setTyping} btnActive={btnActive} setBtnActive={setBtnActive} />
             {
                 timeUp ? (
@@ -45,7 +46,7 @@ function TypeBox({ typing, setTyping, timeUp, setTimeUp }: TypeBoxProps) {
                             <h1>WPM : {Math.floor((totalWordCount - wrongWordCount) * 60 / btnActive)}</h1>
                             <h1>Accuracy : {Math.floor(((totalWordCount - wrongWordCount) / totalWordCount) * 100)}%</h1>
                         </div>
-                        <button><FontAwesomeIcon icon={faArrowRotateLeft} className='text-2xl' onClick={(e) => { setTimeUp(false) }} /></button>
+                        <button onClick={(e) => { setTimeUp(false) }}><FontAwesomeIcon icon={faArrowRotateLeft} className='text-2xl' /></button>
                     </div>) :
                     <Sentence
                         typing={typing}

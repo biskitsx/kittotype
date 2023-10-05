@@ -1,4 +1,4 @@
-import { faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRotateLeft, faArrowRotateRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useState, useEffect, SyntheticEvent } from 'react';
@@ -90,7 +90,7 @@ function Sentence({ typing, sentence, totalWordCount, setTotalWordCount, wrongWo
                     );
                 })}
             </div>
-            <button><FontAwesomeIcon icon={faArrowRotateLeft} className='text-2xl' onClick={(e) => { refreshSentence(e) }} /></button>
+            <button onClick={(e) => { refreshSentence(e) }} disabled={isLoading}><FontAwesomeIcon icon={faArrowRotateRight} className={isLoading ? 'text-2xl animate-spin text-gray-500 ' : 'text-2xl text-gray-500 hover:text-black'} /></button>
         </div>
     );
 }
