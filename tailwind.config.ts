@@ -8,12 +8,15 @@ const config: Config = {
     ],
     theme: {
         extend: {
-            backgroundImage: {
-                'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-                'gradient-conic':
-                    'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-            },
-        },
+            width: {
+                '128': '32rem',
+                '540': '540px',
+                '720': '720px',
+                '960': '960px',
+                '1140': '1140px',
+                '1320': '1320px',
+            }
+        }
     },
     plugins: [daisyui],
 }
