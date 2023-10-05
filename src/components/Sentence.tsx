@@ -1,4 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import axios from 'axios';
+import React, { useState, useEffect, SyntheticEvent } from 'react';
 
 interface SentenceProps {
     typing: string;
@@ -7,10 +10,14 @@ interface SentenceProps {
     setTotalWordCount: React.Dispatch<React.SetStateAction<number>>;
     wrongWordCount: number;
     setWrongWordCount: React.Dispatch<React.SetStateAction<number>>;
+    setTimeUp: React.Dispatch<React.SetStateAction<boolean>>;
+    setSentence: React.Dispatch<React.SetStateAction<string>>
 }
-function Sentence({ typing, sentence, totalWordCount, setTotalWordCount, wrongWordCount, setWrongWordCount }: SentenceProps) {
-    let countChar = 0;
 
+
+function Sentence({ typing, sentence, totalWordCount, setTotalWordCount, wrongWordCount, setWrongWordCount, setTimeUp, setSentence }: SentenceProps) {
+    let countChar = 0;
+    const [isLoading, setIsLoading] = useState(false);
     const words = sentence.split(' ').map((word, index) => {
         let chars = Array.from(word).map((char, charIndex) => ({
             char,
@@ -22,6 +29,13 @@ function Sentence({ typing, sentence, totalWordCount, setTotalWordCount, wrongWo
             chars,
         };
     });
+    const refreshSentence = async (e: SyntheticEvent,) => {
+        setIsLoading(true)
+        const { data } = await axios.get('https://random-word-api.herokuapp.com/word?number=75&length=4')
+        setSentence(data.join(' '))
+        setIsLoading(false)
+    }
+
 
     const cssForChar = (index: number) => {
         let css = '';
@@ -55,28 +69,28 @@ function Sentence({ typing, sentence, totalWordCount, setTotalWordCount, wrongWo
         setWrongWordCount(typedWords.length - correctWords.length);
     }, [typing, sentence]);
 
+
     return (
-        <div
-            className='flex flex-wrap justify-between flex-row text-2xl font-semibold text-neutral tracking-widest ease-in'
-            style={{ wordWrap: 'break-word' }}
-        >
-            {words.map((word, index) => {
-                return (
-                    <div key={index} className='flex flex-row'>
-                        {word.chars.map((char, childIndex) => {
-                            return (
-                                <span key={childIndex} className={cssForChar(char.index)}>
-                                    {char.char === ' ' ? '\u00A0' : char.char}
-                                </span>
-                            );
-                        })}
-                    </div>
-                );
-            })}
-            {/* <div>
-                <p>Total Words Typed: {totalWordCount}</p>
-                <p>Wrong Words: {wrongWordCount}</p>
-            </div> */}
+        <div className='flex-col flex justify-center gap-10'>
+            <div
+                className={isLoading ? "sentence-wrap-loading" : "sentence-wrap"}
+                style={{ wordWrap: 'break-word' }}
+            >
+                {words.map((word, index) => {
+                    return (
+                        <div key={index} className='flex flex-row'>
+                            {word.chars.map((char, childIndex) => {
+                                return (
+                                    <span key={childIndex} className={cssForChar(char.index)}>
+                                        {char.char === ' ' ? '\u00A0' : char.char}
+                                    </span>
+                                );
+                            })}
+                        </div>
+                    );
+                })}
+            </div>
+            <button><FontAwesomeIcon icon={faArrowRotateLeft} className='text-2xl' onClick={(e) => { refreshSentence(e) }} /></button>
         </div>
     );
 }
