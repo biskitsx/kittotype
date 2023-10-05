@@ -13,11 +13,11 @@ export default function Home() {
         setTyping(e.target.value)
     }
     return (
-        <div className='h-screen relative'>
+        <div className='h-screen relative flex flex-col items-center'>
             <input type="text" id='type' className='opacity-0 -z-10 absolute' value={typing} onChange={onTyping} />
             <Nav />
-            <label htmlFor="type" className=''>
-                <TypeBox typing={typing} />
+            <label htmlFor="type" className='w-full flex justify-center'>
+                <TypeBox typing={typing} setTyping={setTyping} />
             </label>
 
         </div>
