@@ -3,6 +3,8 @@ import Typing from './Sentence'
 import Sentence from './Sentence'
 import TimeSelector from './TimeSelector'
 import axios from 'axios'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons'
 
 interface TypeBoxProps {
     typing: string;
@@ -43,9 +45,18 @@ function TypeBox({ typing, setTyping, timeUp, setTimeUp }: TypeBoxProps) {
                             <h1>WPM : {Math.floor((totalWordCount - wrongWordCount) * 60 / btnActive)}</h1>
                             <h1>Accuracy : {Math.floor(((totalWordCount - wrongWordCount) / totalWordCount) * 100)}%</h1>
                         </div>
-                        <button className='btn btn-accent w-1/12' onClick={(e) => { setTimeUp(false) }}>Restart</button>
+                        <button><FontAwesomeIcon icon={faArrowRotateLeft} className='text-2xl' onClick={(e) => { setTimeUp(false) }} /></button>
                     </div>) :
-                    <Sentence typing={typing} sentence={sentence} totalWordCount={totalWordCount} setTotalWordCount={setTotalWordCount} wrongWordCount={wrongWordCount} setWrongWordCount={setWrongWordCount} />
+                    <Sentence
+                        typing={typing}
+                        sentence={sentence}
+                        totalWordCount={totalWordCount}
+                        setTotalWordCount={setTotalWordCount}
+                        wrongWordCount={wrongWordCount}
+                        setWrongWordCount={setWrongWordCount}
+                        setTimeUp={setTimeUp}
+                        setSentence={setSentence}
+                    />
 
             }
         </div >
