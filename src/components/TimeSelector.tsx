@@ -46,7 +46,8 @@ function TimeSelector({ typing, setTimeUp, setTyping, btnActive, setBtnActive }:
     return (
         <div className='w-full flex items-center justify-between bg-neutral-content rounded-md p-2 shadow-md'>
             <span className="countdown font-mono text-4xl">
-                <span style={{ "--value": time }}></span>
+                {/* <span style={{ "--value": time }}></span> */}
+                {time}
             </span>
             <div className="tabs font-semibold">
                 <button value={15} className={btnActive == 15 ? "tab tab-active" : "tab"} onClick={onBtnClick}>15s</button>
