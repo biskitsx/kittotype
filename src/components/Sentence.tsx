@@ -41,19 +41,18 @@ function Sentence({ typing, sentence, totalWordCount, setTotalWordCount, wrongWo
 
     useEffect(() => {
         const typedWords = typing.split(' ').filter((word) => word.trim() !== '');
-        if (typedWords.length > 1) {
-            const typedWordsSubmit = typedWords.slice(0, -1)
-            console.log(typedWordsSubmit)
-            const correctWords = sentence.split(' ').filter((word, index) => {
-                return (
-                    typedWordsSubmit[index] && word.trim() === typedWordsSubmit[index].trim()
-                );
-            });
-
-            setTotalWordCount(typedWordsSubmit.length);
-            setWrongWordCount(typedWordsSubmit.length - correctWords.length);
-        }
-
+        const correctWords = sentence.split(' ').filter((word, index) => {
+            if (index == typedWords.length - 1) {
+                if (word.trim() === typedWords[index].trim()) {
+                    return typedWords[index]
+                }
+            }
+            return (
+                typedWords[index] && word.trim() === typedWords[index].trim()
+            );
+        });
+        setTotalWordCount(typedWords.length);
+        setWrongWordCount(typedWords.length - correctWords.length);
     }, [typing, sentence]);
 
     return (
