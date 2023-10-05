@@ -10,14 +10,14 @@ function Nav() {
     return (
         // <div className="navbar bg-primary shadow-md rounded-md ">
         <div className="text-base-content w-full grid place-items-center  bg-base-100  z-50">
-            <div className='navbar w-11/12'>
+            <div className='navbar w-10/12 px-40'>
 
                 <div className="flex-1" >
-                    <a className="btn btn-ghost normal-case text-2xl text-base-content font-extrabold "><FontAwesomeIcon icon={faKeyboard} className='text-error text-3xl' /> typeit</a>
+                    <a className=" normal-case text-2xl text-base-content font-extrabold cursor-pointer"><FontAwesomeIcon icon={faKeyboard} className='text-error text-3xl' /> typeit</a>
                 </div >
                 <div className="flex-none gap-2">
                     <div className="form-control">
-                        <h1 className='hidden sm:block font-medium'>Suphakit Songsuwong</h1>
+                        <h1 className='hidden sm:block font-semibold tracking-wide'>Suphakit Songsuwong</h1>
                     </div>
                     <div className="dropdown dropdown-end">
                         <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
