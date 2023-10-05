@@ -4,9 +4,9 @@
 
 .char-active:before {
     content: "|";
-    @apply animate-pulse text-secondary
+    @apply animate-pulse text-primary absolute -left-1 ease-in
 }
 
 .char-nontyped {
-    @apply text-gray-400
+    @apply text-gray-500 no-underline
 }
