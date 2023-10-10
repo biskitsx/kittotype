@@ -2,9 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
-.char-active:before {
+.word {
+    @apply inline-flex mr-4 tracking-wide relative
+}
+.letter {
+    @apply relative text-2xl font-medium text-zinc-500
+}
+.letter.current:before {
     content: "|";
-    @apply animate-pulse text-primary absolute -left-1 ease-in
+    @apply animate-pulse text-primary absolute -left-1 ease-in text-2xl
+}
+.letter.correct {
+    @apply text-green-500
+}
+.letter.wrong {
+    @apply text-red-500
 }
 
 .char-nontyped {
