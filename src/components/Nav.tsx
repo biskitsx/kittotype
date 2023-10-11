@@ -11,9 +11,8 @@ function Nav() {
         // <div className="navbar bg-primary shadow-md rounded-md ">
         <div className="text-base-content w-full grid place-items-center  bg-base-100  z-50">
             <div className='navbar px-2 '>
-
                 <div className="flex-1" >
-                    <a className=" normal-case text-2xl text-base-content font-extrabold cursor-pointer"><FontAwesomeIcon icon={faKeyboard} className='text-error text-3xl' /> typeit</a>
+                    <a className=" normal-case text-2xl text-base-content font-extrabold cursor-pointer flex gap-2 tracking-wider"><FontAwesomeIcon icon={faKeyboard} className='text-error text-3xl' /> typeit</a>
                 </div >
                 <div className="flex-none gap-2">
                     <div className="form-control">
