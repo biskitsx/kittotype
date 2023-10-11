@@ -15,8 +15,14 @@ const config: Config = {
                 '960': '960px',
                 '1140': '1140px',
                 '1320': '1320px',
+            },
+            animation: {
+                'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
             }
-        }
+        },
+    },
+    daisyui: {
+        themes: ["dracula"],
     },
     plugins: [daisyui],
 }
