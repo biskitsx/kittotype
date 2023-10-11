@@ -101,18 +101,28 @@ export default function Home() {
                     }
 
                     else if (isSpace) {
+                        // ยังไม่จบ word แล้วกด space
                         if (currentLetter !== key) {
                             // If the current letter is not a space, move to the next word and reset the letter index
                             changeWordCss('wrong', currentWordIndex);
                             setCurrentWord(currentWordIndex + 1);
                             setCurrentLetter(0);
                         }
+                        // จบ word แล้วกด space
                         if (currentLetter === key) {
                             if (currentWordIndex + 1 < words.length) {
                                 // If there are more words, move to the next word and reset the letter index
+
+                                const isWordIncorrect = letterCSS[currentWordIndex].find((letter: string) => letter === 'wrong');
+                                if (isWordIncorrect) {
+                                    changeWordCss('wrong', currentWordIndex);
+                                } else {
+                                    changeWordCss('correct', currentWordIndex);
+                                }
                                 setCurrentWord(currentWordIndex + 1);
                                 setCurrentLetter(0);
                             }
+
                         }
                     }
 
