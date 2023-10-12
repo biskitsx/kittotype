@@ -22,6 +22,7 @@ export default function Home() {
     const [timerRunning, setTimerRunning] = useState(false);
     const [wpm, setWPM] = useState<number>(0);
     const wordsContainerRef = useRef<HTMLDivElement | null>(null);
+    const [isEnded, setIsEnded] = useState<boolean>(false);
 
     const getNewWordsAndClearCSS = () => {
         let words = [];
@@ -41,9 +42,6 @@ export default function Home() {
         setWordCSS(wordCssInit);
     }
 
-
-
-
     const newGame = () => {
         // set new words
         getNewWordsAndClearCSS();
@@ -54,6 +52,7 @@ export default function Home() {
 
         // reset timer
         resetTimer();
+        setIsEnded(false);
     }
 
     const getWPM = () => {
@@ -95,7 +94,7 @@ export default function Home() {
 
     const handleKeyPress = (e: KeyboardEvent) => {
         // Ensure the words container is in focus
-        if (wordsContainerRef.current === document.activeElement) {
+        if (wordsContainerRef.current === document.activeElement && !isEnded) {
 
             // detect first letter to start countdown
             e.preventDefault();
@@ -201,6 +200,7 @@ export default function Home() {
 
     useEffect(() => {
         if (timeRemaining === 0) {
+            setIsEnded(true);
             setTimerRunning(false);
         }
         if (timerRunning && timeRemaining > 0) {
