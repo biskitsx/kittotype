@@ -16,14 +16,12 @@ export default function Home() {
     const [onFocus, setOnFocus] = useState<boolean>(true);
     const [currentWordIndex, setCurrentWord] = useState<number>(0);
     const [currentLetterIndex, setCurrentLetter] = useState<number>(0);
-    const [countCorrectWord, setCountCorrectWord] = useState<number>(0);
-    const [countWrongWord, setCountWrongWord] = useState<number>(0);
     const [timeRemaining, setTimeRemaining] = useState(15); // Initialize timer to 15 seconds
     const [timerRunning, setTimerRunning] = useState(false);
     const [wpm, setWPM] = useState<number>(0);
     const wordsContainerRef = useRef<HTMLDivElement | null>(null);
     const [isEnded, setIsEnded] = useState<boolean>(false);
-
+    const buttonRef = useRef<HTMLButtonElement | null>(null);
     const getNewWordsAndClearCSS = () => {
         let words = [];
         for (let i = 0; i < 42; i++) {
@@ -40,6 +38,7 @@ export default function Home() {
         });
         setLetterCSS(letterCssInit);
         setWordCSS(wordCssInit);
+        wordsContainerRef.current?.focus();
     }
 
     const newGame = () => {
@@ -106,9 +105,13 @@ export default function Home() {
             const isSpace = key === ' ';
             const isBackspace = key === 'Backspace';
             const isFirstLetter = currentLetterIndex === 0;
+            const isTab = key === 'Tab';
             // const currentLetterRef = document.querySelector('.letter.current');
 
-            if (isLetter) {
+            if (isTab) {
+                buttonRef.current?.focus();
+            }
+            else if (isLetter) {
                 if (currentLetterIndex === 0 && currentWordIndex === 0) {
                     // start countdown
                     startTimer();
@@ -212,14 +215,14 @@ export default function Home() {
     }, [timeRemaining, timerRunning]);
     return (
         <div className='h-screen relative flex flex-col items-center w-full'>
-            <div className='container h-full'>
+            <div className='container'>
                 <Nav />
-                <div className='flex justify-center items-center h-full flex-col gap-10'>
-                    <div className='flex justify-start w-full gap-10 text-2xl font-medium text-accent'>
+                <div className='wrap-content'>
+                    <div className='time-wpm'>
                         <p className=''>{timeRemaining}</p>
                         <p className=''>WPM: {wpm}</p>
                     </div>
-                    <div ref={wordsContainerRef} tabIndex={0} className='outline-none'>
+                    <div ref={wordsContainerRef} tabIndex={0} className='game'>
                         {words.map((word, wordIndex) => {
                             let wordCss = wordIndex === currentWordIndex ? 'word current' : 'word';
                             const currentCssWord = wordCSS[wordIndex];
@@ -240,7 +243,7 @@ export default function Home() {
                             )
                         })}
                     </div>
-                    <button onClick={newGame}><FontAwesomeIcon icon={faArrowRightRotate} className='text-2xl text-gray-500 hover:text-black' /></button>
+                    <button onClick={newGame} ref={buttonRef} className='focus:text-white'><FontAwesomeIcon icon={faArrowRightRotate} className='new-game-btn' /></button>
                 </div>
             </div>
             <Footer />
