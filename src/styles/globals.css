@@ -2,9 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
-.char-active:before {
-    content: "|";
-    @apply animate-pulse text-primary absolute -left-1 ease-in
+.word {
+    letter-spacing: 3px;
+    @apply inline-flex mr-4 mb-1 relative border-b-2 border-transparent
+}
+
+.word.wrong{
+    @apply border-b-2 border-error box-border
+}
+.letter {
+    @apply relative text-2xl  text-zinc-500
+}
+.letter.current:before {
+    content: "";
+    width: 2px;
+    left: -2px;
+    @apply animate-pulse-fast text-primary absolute ease-in text-2xl  h-full bg-primary rounded-md
+}
+
+.letter.correct {
+    @apply text-neutral-content
+}
+.letter.wrong {
+    @apply text-error
 }
 
 .char-nontyped {
@@ -18,12 +38,22 @@
     lg:w-960
     xl:w-1140
     2xl:w-1320 
+    px-8
+    h-full
 }
 
-.sentence-wrap {
-    @apply flex flex-wrap justify-between flex-row  font-semibold text-neutral tracking-widest ease-in text-lg md:text-xl lg:text-2xl
+.wrap-content {
+    @apply flex justify-center items-center h-full flex-col gap-10
 }
 
-.sentence-wrap-loading {
-    @apply flex flex-wrap justify-between flex-row text-2xl font-semibold text-neutral tracking-widest ease-in animate-pulse
+.time-wpm {
+    @apply flex justify-start w-full gap-10 text-2xl font-medium text-accent
+}
+
+.game {
+    @apply outline-none overflow-hidden h-28 px-1
+}
+
+.new-game-btn {
+    @apply text-2xl text-gray-500 hover:text-white
 }
