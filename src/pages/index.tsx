@@ -202,14 +202,14 @@ export default function Home() {
 
 
     useEffect(() => {
-        if (timeRemaining === 0) {
+        if (timeRemaining <= 0.00) {
             setIsEnded(true);
             setTimerRunning(false);
         }
-        if (timerRunning && timeRemaining > 0) {
+        if (timerRunning && timeRemaining > 0.0) {
             const timer = setTimeout(() => {
-                setTimeRemaining((prevTime) => prevTime - 1);
-            }, 1000);
+                setTimeRemaining((prevTime) => prevTime - 0.1);
+            }, 100);
             return () => clearTimeout(timer);
         }
     }, [timeRemaining, timerRunning]);
@@ -219,7 +219,7 @@ export default function Home() {
                 <Nav />
                 <div className='wrap-content'>
                     <div className='time-wpm'>
-                        <p className=''>{timeRemaining}</p>
+                        <p className=''>{timeRemaining <= 0 ? 15 : Math.floor(timeRemaining)}</p>
                         <p className=''>WPM: {wpm}</p>
                     </div>
                     <div ref={wordsContainerRef} tabIndex={0} className='game'>
