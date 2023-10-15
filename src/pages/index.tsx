@@ -3,9 +3,11 @@ import { useEffect, useRef, useState } from 'react';
 import { Inter } from 'next/font/google';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
+
 import { allWords } from '@/data/words';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeftRotate, faArrowRightRotate } from '@fortawesome/free-solid-svg-icons';
+import CircularWithValueLabel from '@/components/CircularProgess';
 const inter = Inter({ subsets: ['latin'] });
 
 
@@ -218,8 +220,9 @@ export default function Home() {
             <div className='container'>
                 <Nav />
                 <div className='wrap-content'>
-                    <div className='time-wpm'>
-                        <p className=''>{timeRemaining <= 0 ? 15 : Math.floor(timeRemaining)}</p>
+                    <div className='time-wpm flex items-center'>
+                        <CircularWithValueLabel timeRemaining={timeRemaining} />
+
                         <p className=''>WPM: {wpm}</p>
                     </div>
                     <div ref={wordsContainerRef} tabIndex={0} className='game'>
