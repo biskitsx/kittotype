@@ -55,5 +55,5 @@
 }
 
 .new-game-btn {
-    @apply text-2xl text-gray-500 hover:text-white
+    @apply text-2xl text-gray-500 hover:text-neutral
 }
