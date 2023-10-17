@@ -11,7 +11,7 @@
     @apply border-b-2 border-error box-border
 }
 .letter {
-    @apply relative text-2xl  text-zinc-500
+    @apply relative text-2xl text-neutral-400
 }
 .letter.current:before {
     content: "";
@@ -21,7 +21,7 @@
 }
 
 .letter.correct {
-    @apply text-neutral-content
+    @apply text-neutral
 }
 .letter.wrong {
     @apply text-error
