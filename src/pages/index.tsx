@@ -223,7 +223,7 @@ export default function Home() {
                     <div className='time-wpm flex items-center'>
                         <CircularWithValueLabel timeRemaining={timeRemaining} />
 
-                        <p className=''>WPM: {wpm}</p>
+                        <p className=''>WPM: {Number.isNaN(wpm) ? 0 : wpm}</p>
                     </div>
                     <div ref={wordsContainerRef} tabIndex={0} className='game'>
                         {words.map((word, wordIndex) => {
