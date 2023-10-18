@@ -21,9 +21,11 @@ export default function Home() {
     const [timeRemaining, setTimeRemaining] = useState(15); // Initialize timer to 15 seconds
     const [timerRunning, setTimerRunning] = useState(false);
     const [wpm, setWPM] = useState<number>(0);
-    const wordsContainerRef = useRef<HTMLDivElement | null>(null);
     const [isEnded, setIsEnded] = useState<boolean>(false);
+    const wordsContainerRef = useRef<HTMLDivElement | null>(null);
     const buttonRef = useRef<HTMLButtonElement | null>(null);
+    const [topOfPrevLetter, setTopOfPrevLetter] = useState<number>(0);
+
     const getNewWordsAndClearCSS = () => {
         let words = [];
         for (let i = 0; i < 42; i++) {
@@ -50,7 +52,6 @@ export default function Home() {
         // reset current word and letter
         setCurrentWord(0);
         setCurrentLetter(0);
-
         // reset timer
         resetTimer();
         setIsEnded(false);
@@ -96,6 +97,14 @@ export default function Home() {
     const handleKeyPress = (e: KeyboardEvent) => {
         // Ensure the words container is in focus
         if (wordsContainerRef.current === document.activeElement && !isEnded) {
+            // is first game
+            if (topOfPrevLetter == 0) {
+                const curLetter = document.querySelector('.current.letter');
+                const curLetterTop = curLetter?.getBoundingClientRect().top;
+                if (curLetterTop) {
+                    setTopOfPrevLetter(curLetterTop);
+                }
+            }
 
             // detect first letter to start countdown
             e.preventDefault();
@@ -108,8 +117,14 @@ export default function Home() {
             const isBackspace = key === 'Backspace';
             const isFirstLetter = currentLetterIndex === 0;
             const isTab = key === 'Tab';
-            // const currentLetterRef = document.querySelector('.letter.current');
+            const curLetter = document.querySelector('.current.letter')?.getBoundingClientRect().top;
+            const isNewLine = topOfPrevLetter != 0 && topOfPrevLetter != curLetter;
 
+            if (isNewLine) {
+                if (curLetter) {
+                    setTopOfPrevLetter(curLetter);
+                }
+            }
             if (isTab) {
                 buttonRef.current?.focus();
             }
@@ -215,16 +230,16 @@ export default function Home() {
             return () => clearTimeout(timer);
         }
     }, [timeRemaining, timerRunning]);
+
     return (
         <div className='h-screen relative flex flex-col items-center w-full'>
             <div className='container'>
                 <Nav />
                 <div className='wrap-content'>
-                    <div className='time-wpm flex items-center'>
+                    {/* <div className='time-wpm flex items-center'>
                         <CircularWithValueLabel timeRemaining={timeRemaining} />
-
                         <p className=''>WPM: {Number.isNaN(wpm) ? 0 : wpm}</p>
-                    </div>
+                    </div> */}
                     <div ref={wordsContainerRef} tabIndex={0} className='game'>
                         {words.map((word, wordIndex) => {
                             let wordCss = wordIndex === currentWordIndex ? 'word current' : 'word';
@@ -246,7 +261,18 @@ export default function Home() {
                             )
                         })}
                     </div>
-                    <button onClick={newGame} ref={buttonRef} className='focus:text-white'><FontAwesomeIcon icon={faArrowRightRotate} className='new-game-btn' /></button>
+                    <div className='flex justify-start w-full'>
+                        <div className='flex gap-4 justify-start font-light'>
+                            <span className='flex items-center gap-2'>
+                                <CircularWithValueLabel timeRemaining={timeRemaining} />
+                                <p className='text-md tracking-wider'>Seconds</p>
+                            </span>
+                            <button onClick={newGame} ref={buttonRef} className='flex justify-center items-center gap-4 py-1 px-2 rounded-2xl bg-neutral outline-accent outline-1 transition-colors' >
+                                <FontAwesomeIcon icon={faArrowRightRotate} className='' />
+                                <p className='tracking-wider text-md'>Reset</p>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
             <Footer />
