@@ -21,7 +21,7 @@
 }
 
 .letter.correct {
-    @apply text-neutral
+    @apply text-white
 }
 .letter.wrong {
     @apply text-error
@@ -52,8 +52,4 @@
 
 .game {
     @apply outline-none overflow-hidden h-28 px-1
-}
-
-.new-game-btn {
-    @apply text-2xl text-gray-500 hover:text-neutral
 }
