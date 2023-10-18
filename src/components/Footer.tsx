@@ -7,8 +7,10 @@ function Footer() {
     return (
 
         <footer className="footer footer-center p-4 bg-base-100 text-base-content rounded gap-4 flex items-center justify-center text-neutral-400">
-
             <nav>
+                <code>
+                    Tab + Enter : Restart
+                </code>
                 <div className="grid grid-flow-col gap-7 text-2xl">
                     <a target='_blank' href="https://suphakit.vercel.app" className='hover:scale-105 hover:text-error'><FontAwesomeIcon icon={faGlobe} /></a>
                     <a target='_blank' href="https://github.com/biskitsx" className='hover:scale-105 hover:text-error'><FontAwesomeIcon icon={faGithub} /></a>
