@@ -27,9 +27,9 @@
 .letter.wrong {
     @apply text-error
 }
-
-.char-nontyped {
-    @apply text-gray-500 no-underline
+.typing-cursor {
+    width: 2px;
+    @apply absolute top-0 right-0 h-8  bg-primary rounded-md
 }
 
 .container {
@@ -52,5 +52,5 @@
 }
 
 .game {
-    @apply outline-none overflow-hidden h-28 px-1
+    @apply outline-none overflow-hidden h-28 px-1 
 }
