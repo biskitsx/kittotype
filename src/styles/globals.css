@@ -11,7 +11,8 @@
     @apply border-b-2 border-error box-border
 }
 .letter {
-    @apply relative text-2xl text-neutral-400
+    font-size: 22px;
+    @apply relative  2xl:text-2xl text-neutral-400
 }
 .letter.current:before {
     content: "";
@@ -21,14 +22,14 @@
 }
 
 .letter.correct {
-    @apply text-neutral
+    @apply text-white
 }
 .letter.wrong {
     @apply text-error
 }
-
-.char-nontyped {
-    @apply text-gray-500 no-underline
+.typing-cursor {
+    width: 2px;
+    @apply absolute top-0 right-0 h-8  bg-primary rounded-md
 }
 
 .container {
@@ -51,9 +52,5 @@
 }
 
 .game {
-    @apply outline-none overflow-hidden h-28 px-1
-}
-
-.new-game-btn {
-    @apply text-2xl text-gray-500 hover:text-neutral
+    @apply outline-none overflow-hidden h-28 px-1 
 }

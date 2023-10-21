@@ -21,9 +21,14 @@ export default function Home() {
     const [timeRemaining, setTimeRemaining] = useState(15); // Initialize timer to 15 seconds
     const [timerRunning, setTimerRunning] = useState(false);
     const [wpm, setWPM] = useState<number>(0);
-    const wordsContainerRef = useRef<HTMLDivElement | null>(null);
+    const [accuracy, setAccuracy] = useState<number>(0);
+    const [countCorrectWords, setCountCorrectWords] = useState<number>(0);
+    const [countWrongWords, setCountWrongWords] = useState<number>(0);
     const [isEnded, setIsEnded] = useState<boolean>(false);
+    const wordsContainerRef = useRef<HTMLDivElement | null>(null);
     const buttonRef = useRef<HTMLButtonElement | null>(null);
+    const [topOfPrevLetter, setTopOfPrevLetter] = useState<number>(0);
+    const [randomColor, setRandomColor] = useState<string>('bg-info');
     const getNewWordsAndClearCSS = () => {
         let words = [];
         for (let i = 0; i < 42; i++) {
@@ -50,19 +55,21 @@ export default function Home() {
         // reset current word and letter
         setCurrentWord(0);
         setCurrentLetter(0);
-
         // reset timer
         resetTimer();
         setIsEnded(false);
     }
 
-    const getWPM = () => {
+    const getResult = () => {
         const correctWordTotal = wordCSS.filter((word) => word === 'correct').length;
         const wrongWordTotal = wordCSS.filter((word) => word === 'wrong').length;
         const totalWord = correctWordTotal + wrongWordTotal;
         const elapsedTime = 15 - timeRemaining;
         const wpm = Math.floor(correctWordTotal * 60 / (elapsedTime))
-        return wpm;
+        setWPM(wpm)
+        setAccuracy(Math.floor(correctWordTotal * 100 / totalWord))
+        setCountCorrectWords(correctWordTotal);
+        setCountWrongWords(wrongWordTotal);
     }
 
     const changeLetterCss = (css: string, wordIndex: number, letterIndex: number) => {
@@ -96,6 +103,14 @@ export default function Home() {
     const handleKeyPress = (e: KeyboardEvent) => {
         // Ensure the words container is in focus
         if (wordsContainerRef.current === document.activeElement && !isEnded) {
+            // is first game
+            if (topOfPrevLetter == 0) {
+                const curLetter = document.querySelector('.current.letter');
+                const curLetterTop = curLetter?.getBoundingClientRect().top;
+                if (curLetterTop) {
+                    setTopOfPrevLetter(curLetterTop);
+                }
+            }
 
             // detect first letter to start countdown
             e.preventDefault();
@@ -108,8 +123,14 @@ export default function Home() {
             const isBackspace = key === 'Backspace';
             const isFirstLetter = currentLetterIndex === 0;
             const isTab = key === 'Tab';
-            // const currentLetterRef = document.querySelector('.letter.current');
+            const curLetter = document.querySelector('.current.letter')?.getBoundingClientRect().top;
+            const isNewLine = topOfPrevLetter != 0 && topOfPrevLetter != curLetter;
 
+            if (isNewLine) {
+                if (curLetter) {
+                    setTopOfPrevLetter(curLetter);
+                }
+            }
             if (isTab) {
                 buttonRef.current?.focus();
             }
@@ -192,7 +213,7 @@ export default function Home() {
 
     useEffect(() => {
         if (onFocus) {
-            setWPM(getWPM());
+            getResult();
             // Add event listeners when onFocus is true
             window.addEventListener('keydown', handleKeyPress);
             // Clean up event listeners when component unmounts
@@ -205,6 +226,7 @@ export default function Home() {
 
     useEffect(() => {
         if (timeRemaining <= 0.00) {
+            getRandomColor();
             setIsEnded(true);
             setTimerRunning(false);
         }
@@ -215,16 +237,22 @@ export default function Home() {
             return () => clearTimeout(timer);
         }
     }, [timeRemaining, timerRunning]);
+
+    const getRandomColor = () => {
+        const color = "bg-info bg-primary bg-accent bg-secondary".split(' ');
+        const random = Math.floor(Math.random() * color.length);
+        setRandomColor(color[random])
+    }
+
     return (
         <div className='h-screen relative flex flex-col items-center w-full'>
             <div className='container'>
                 <Nav />
                 <div className='wrap-content'>
-                    <div className='time-wpm flex items-center'>
+                    {/* <div className='time-wpm flex items-center'>
                         <CircularWithValueLabel timeRemaining={timeRemaining} />
-
                         <p className=''>WPM: {Number.isNaN(wpm) ? 0 : wpm}</p>
-                    </div>
+                    </div> */}
                     <div ref={wordsContainerRef} tabIndex={0} className='game'>
                         {words.map((word, wordIndex) => {
                             let wordCss = wordIndex === currentWordIndex ? 'word current' : 'word';
@@ -246,7 +274,26 @@ export default function Home() {
                             )
                         })}
                     </div>
-                    <button onClick={newGame} ref={buttonRef} className='focus:text-white'><FontAwesomeIcon icon={faArrowRightRotate} className='new-game-btn' /></button>
+                    <div className='flex justify-start w-full'>
+                        <div className='flex gap-4 justify-start font-light'>
+                            <span className='flex items-center gap-2'>
+                                <CircularWithValueLabel timeRemaining={timeRemaining} />
+                                <p className='text-md tracking-wider'>Seconds</p>
+                            </span>
+                            <button onClick={newGame} ref={buttonRef} className='flex justify-center items-center gap-4 py-1 px-2 rounded-md bg-neutral outline-accent outline-1 transition-colors' >
+                                <FontAwesomeIcon icon={faArrowRightRotate} className='' />
+                                <p className='tracking-wider text-md'>Reset</p>
+                            </button>
+                            {isEnded &&
+                                <div className={`flex items-center text-md tracking-wider gap-4 border border-neutral rounded-md px-2 ${randomColor} text-info-content font-medium`}>
+                                    <p className=''>WPM: {Number.isNaN(wpm) ? 0 : wpm}</p>
+                                    <p>Wrong words: {countWrongWords}</p>
+                                    <p>Correct words: {countCorrectWords}</p>
+                                    <p>Accuracy: {accuracy}%</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
                 </div>
             </div>
             <Footer />
