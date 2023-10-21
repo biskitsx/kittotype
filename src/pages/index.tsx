@@ -21,11 +21,14 @@ export default function Home() {
     const [timeRemaining, setTimeRemaining] = useState(15); // Initialize timer to 15 seconds
     const [timerRunning, setTimerRunning] = useState(false);
     const [wpm, setWPM] = useState<number>(0);
+    const [accuracy, setAccuracy] = useState<number>(0);
+    const [countCorrectWords, setCountCorrectWords] = useState<number>(0);
+    const [countWrongWords, setCountWrongWords] = useState<number>(0);
     const [isEnded, setIsEnded] = useState<boolean>(false);
     const wordsContainerRef = useRef<HTMLDivElement | null>(null);
     const buttonRef = useRef<HTMLButtonElement | null>(null);
     const [topOfPrevLetter, setTopOfPrevLetter] = useState<number>(0);
-
+    const [randomColor, setRandomColor] = useState<string>('bg-info');
     const getNewWordsAndClearCSS = () => {
         let words = [];
         for (let i = 0; i < 42; i++) {
@@ -57,13 +60,16 @@ export default function Home() {
         setIsEnded(false);
     }
 
-    const getWPM = () => {
+    const getResult = () => {
         const correctWordTotal = wordCSS.filter((word) => word === 'correct').length;
         const wrongWordTotal = wordCSS.filter((word) => word === 'wrong').length;
         const totalWord = correctWordTotal + wrongWordTotal;
         const elapsedTime = 15 - timeRemaining;
         const wpm = Math.floor(correctWordTotal * 60 / (elapsedTime))
-        return wpm;
+        setWPM(wpm)
+        setAccuracy(Math.floor(correctWordTotal * 100 / totalWord))
+        setCountCorrectWords(correctWordTotal);
+        setCountWrongWords(wrongWordTotal);
     }
 
     const changeLetterCss = (css: string, wordIndex: number, letterIndex: number) => {
@@ -207,7 +213,7 @@ export default function Home() {
 
     useEffect(() => {
         if (onFocus) {
-            setWPM(getWPM());
+            getResult();
             // Add event listeners when onFocus is true
             window.addEventListener('keydown', handleKeyPress);
             // Clean up event listeners when component unmounts
@@ -220,6 +226,7 @@ export default function Home() {
 
     useEffect(() => {
         if (timeRemaining <= 0.00) {
+            getRandomColor();
             setIsEnded(true);
             setTimerRunning(false);
         }
@@ -230,6 +237,12 @@ export default function Home() {
             return () => clearTimeout(timer);
         }
     }, [timeRemaining, timerRunning]);
+
+    const getRandomColor = () => {
+        const color = "bg-info bg-primary bg-accent bg-secondary".split(' ');
+        const random = Math.floor(Math.random() * color.length);
+        setRandomColor(color[random])
+    }
 
     return (
         <div className='h-screen relative flex flex-col items-center w-full'>
@@ -267,10 +280,18 @@ export default function Home() {
                                 <CircularWithValueLabel timeRemaining={timeRemaining} />
                                 <p className='text-md tracking-wider'>Seconds</p>
                             </span>
-                            <button onClick={newGame} ref={buttonRef} className='flex justify-center items-center gap-4 py-1 px-2 rounded-2xl bg-neutral outline-accent outline-1 transition-colors' >
+                            <button onClick={newGame} ref={buttonRef} className='flex justify-center items-center gap-4 py-1 px-2 rounded-md bg-neutral outline-accent outline-1 transition-colors' >
                                 <FontAwesomeIcon icon={faArrowRightRotate} className='' />
                                 <p className='tracking-wider text-md'>Reset</p>
                             </button>
+                            {isEnded &&
+                                <div className={`flex items-center text-md tracking-wider gap-4 border border-neutral rounded-md px-2 ${randomColor} text-info-content font-medium`}>
+                                    <p className=''>WPM: {Number.isNaN(wpm) ? 0 : wpm}</p>
+                                    <p>Wrong words: {countWrongWords}</p>
+                                    <p>Correct words: {countCorrectWords}</p>
+                                    <p>Accuracy: {accuracy}%</p>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>
